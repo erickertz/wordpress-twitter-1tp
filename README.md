@@ -20,9 +20,9 @@ notes: During its first run the plugin will go back as far as possible to retrie
 
 == Installation ==
 
-1. Download `plugin-name.zip`
-2. Extract the `plugin-name` directory to your computer
-3. Upload the `plugin-name` directory to the `/wp-content/plugins/` directory
+1. Download `wordpress-twitter-1tp`
+2. Extract the `wordpress-twitter-1tp` directory to your computer
+3. Upload the `wordpress-twitter-1tp` directory to the `/wp-content/plugins/` directory
 4. Activate the plugin in the Plugin dashboard
 5: Go to Settings->Twitter and enter your API credentials
 6: Go to a page or post and enter the search phrase you would like to associate with the post.
