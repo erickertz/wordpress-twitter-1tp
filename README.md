@@ -30,7 +30,7 @@ notes: During its first run the plugin will go back as far as possible to retrie
 
 You should now see the retrieved tweets available for that post in the Wordpress admin as Custom Fields. Make sure you have Custom fields checked off in your Screen Options.
 
-## TO-Do's
+## To-Do's
 
 1. Add an option in setting page to define which post types the Twitter Hashtag field should be applied to. Right now it must be manually set in admin/class-wordpress-twitter-1tp-admin.php.
 2. Use Composer to manage and load Codebird dependency.
