@@ -1,14 +1,22 @@
 # Wordpress_Twitter_1TP
 
 Contributors: erictr1ck
+
 Tags: twitter
+
 Requires at least: 3.9.1
+
 Tested up to: 3.9.1
+
 Stable tag: 1.0.0
+
 License: GPLv2 or later
+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
+
 Uses the Twitter REST API 1.1 search/tweets functionality to add tweets to posts
+
 
 ## Description
 
