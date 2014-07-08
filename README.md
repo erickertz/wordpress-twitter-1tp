@@ -20,7 +20,7 @@ Uses the Twitter REST API 1.1 search/tweets functionality to add tweets to posts
 
 ## Description
 
-This plugin uses the Twitter REST API 1.1 search/tweets functionality to add tweets to posts. After Installation a new Twitter Settings section will appear in the admin where you can input your Twitter API credentials. There will also be a new Twitter Hashtag field available for the posts that will use the plugin (specified in admin/class-wordpress-twitter-1tp-admin.php). The plugin will use the text specified in these fields to search twitter and attach the returned tweets to the corresponding posts. 
+This plugin uses the Twitter REST API 1.1 search/tweets functionality to add tweets to posts. After Installation a new Twitter Settings section will appear in the admin where you can input your Twitter API credentials. There will also be a new Twitter Hashtag field available for the posts that will use the plugin (specified in admin/class-wordpress-twitter-1tp-admin.php). The plugin will use the text specified in these fields to search twitter and attach the returned tweets to the corresponding posts. If the Advanced Custom Field Repeater field is installed, the tweets will go into a grouped repeater field. If not, they will be saved as regular post meta.
 
 To retrieve the tweets, simply add the shortcode [get_tweets] to a post and visit that post in a browser. You can also set a cron task to call the post peridically in order to keep your posts up to date with the latest tweets.
 
