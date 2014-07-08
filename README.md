@@ -42,7 +42,6 @@ You should now see the retrieved tweets available for that post in the Wordpress
 
 1. Add an option in setting page to define which post types the Twitter Hashtag field should be applied to. Right now it must be manually set in admin/class-wordpress-twitter-1tp-admin.php.
 2. Use Composer to manage and load Codebird dependency.
-3. Check if Advanced Custom Fields plugin is installed. If so, perhaps use ACF's repeater field for easier managemant of tweets. If ACF is not available the plugin should ALWAYS fall back to using Wordpress's out of the box meta fields as it does now.
 
 ## Updates
 
