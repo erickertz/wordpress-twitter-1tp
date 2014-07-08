@@ -346,14 +346,64 @@ class Wordpress_Twitter_1TP {
 	 * @since    1.0.0
 	 */
 	private function save_tweets($pageId, array $statuses){
+		$saveMethod = null;
+		if(class_exists('Wordpress_Twitter_1TP_Acf')){
+			if(Wordpress_Twitter_1TP_Acf::check_acf_repeater()){
+				$saveMethod = "acf";
+			}
+		}
 		if(!empty($statuses)){
 			foreach($statuses as $status){
-				$statusJson = json_encode($status);
-				update_post_meta( $pageId, 'tweet: '.$status->text, $statusJson, "" );
+				switch ($saveMethod) {
+				    case "acf":
+				        $this->save_tweet_acf( $pageId, $status);
+				        break;
+				    default:
+				       $this->save_tweet_meta( $pageId, $status);
+				}
 			}
 			update_post_meta( $pageId, '_twitter_since_id',  $statuses[0]->id);
 		}
 		return true;
+	}
+	
+	/**
+	 * Save tweets as WP native meta fields
+	 *
+	 * @since    1.0.0
+	 */
+	private function save_tweet_meta($pageId,$status){
+		$statusJson = json_encode($status);
+		update_post_meta( $pageId, 'tweet: '.$status->text, $statusJson, "" );
+	}
+	
+	/**
+	 * Save tweets as Advanced Custom Field Repeater field
+	 *
+	 * @since    1.0.0
+	 */
+	private function save_tweet_acf($pageId,$status){
+		$statusJson = json_encode($status);
+		$acfRepeaterStructure = Wordpress_Twitter_1TP_Acf::$acf_field_repeater_structure;
+		$newTweet = array();
+		foreach($acfRepeaterStructure['fields'][0]['sub_fields'] as $acfRepeaterStructureSubField){
+			switch ($acfRepeaterStructureSubField['name']) {
+			    case "tweet":
+			        $newTweet[$acfRepeaterStructureSubField['key']] = $status->text;
+			        break;
+			    case "json":
+			        $newTweet[$acfRepeaterStructureSubField['key']] = $statusJson;
+			        break;
+			    case "approved":
+			        $newTweet[$acfRepeaterStructureSubField['key']] = array(1);
+			        break;
+			}
+		}
+		$field_key = $acfRepeaterStructure['fields'][0]['key'];
+		$value = get_field($field_key, $pageId);
+		$value = get_field($field_key, $pageId);
+		$value[] = $newTweet;
+		update_field( $field_key, $value, $pageId );
 	}
 
 	/**

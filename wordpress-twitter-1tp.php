@@ -32,6 +32,16 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 /*----------------------------------------------------------------------------*
+ * Global Functionality
+ *----------------------------------------------------------------------------*/
+ /*
+ * Use this section to include shared functionality
+ *
+ */
+require_once( plugin_dir_path( __FILE__ ) . 'includes/class-wordpress-twitter-1tp-acf.php' );
+add_action( 'plugins_loaded', array( 'Wordpress_Twitter_1TP_Acf', 'get_instance' ) );
+
+/*----------------------------------------------------------------------------*
  * Public-Facing Functionality
  *----------------------------------------------------------------------------*/
 

@@ -19,6 +19,7 @@
  * @package Wordpress_Twitter_1TP_Admin
  * @author  Eric Kertz <erickertz@1trickpony.com>
  */
+ 
 class Wordpress_Twitter_1TP_Admin {
 
 	/**
@@ -45,6 +46,7 @@ class Wordpress_Twitter_1TP_Admin {
 	 *
 	 * @since     1.0.0
 	 */
+	 	 
 	private function __construct() {
 		/*
 		 * @TODO :
@@ -338,8 +340,8 @@ class Wordpress_Twitter_1TP_Admin {
 		$mydata = sanitize_text_field( $_POST['twitter_hashtag'] );
 
 		// Update the meta field.
-		update_post_meta( $post_id, '_twitter_hashtag', $mydata );
-		
+		update_post_meta( $post_id, '_twitter_hashtag', $mydata );	
+		 
 	}
 
 }
