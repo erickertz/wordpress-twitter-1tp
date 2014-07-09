@@ -419,10 +419,14 @@ class Wordpress_Twitter_1TP {
 			'posts_per_page' => -1,
 			'meta_key' => '_twitter_hashtag'
 		);
-		$myposts = get_posts( $args );		
+		$myposts = get_posts( $args );
 		foreach ( $myposts as $post ) {
+			$sinceId = 1;
 			$custom_fields = get_post_custom($post->ID);
-			$hashtagPages[]  = array('id' => $post->ID, 'hashtag' => $custom_fields['_twitter_hashtag'][0], 'since_id' => $custom_fields['_twitter_since_id'][0]);
+			if(isset($custom_fields['_twitter_since_id'][0])){
+				$sinceId = $custom_fields['_twitter_since_id'][0];
+			}
+			$hashtagPages[]  = array('id' => $post->ID, 'hashtag' => $custom_fields['_twitter_hashtag'][0], 'since_id' => $sinceId);
 		}
 		wp_reset_postdata();
 		return $hashtagPages;
