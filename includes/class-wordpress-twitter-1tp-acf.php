@@ -54,7 +54,7 @@ class Wordpress_Twitter_1TP_Acf {
 						'placeholder' => '',
 						'prepend' => '',
 						'append' => '',
-						'formatting' => 'html',
+						'formatting' => 'none',
 						'maxlength' => '',
 					),
 					array (
@@ -67,7 +67,7 @@ class Wordpress_Twitter_1TP_Acf {
 						'placeholder' => '',
 						'prepend' => '',
 						'append' => '',
-						'formatting' => 'html',
+						'formatting' => 'none',
 						'maxlength' => '',
 					),
 					array (
@@ -163,6 +163,33 @@ class Wordpress_Twitter_1TP_Acf {
 		}
 		return false;
 	}
+	
+	/**
+	 * Checks to see if Advanced Custom Fields Hidden Field is installed
+	 *
+	 * @since    1.0.0
+	 */
+	public static function check_acf_hidden(){
+		if(class_exists('acf_field_hidden')){
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns single field key from acf_field_repeater_field
+	 *
+	 * @since    1.0.0
+	 */
+	public static function get_acf_field_repeater_field_key($name){
+		$structure = self::$acf_field_repeater_structure;
+		foreach($structure['fields'][0]['sub_fields'] as $subFieldKey => $subFieldVal){
+			if($subFieldVal['name'] == $name){
+				return $subFieldKey;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Adds an ACF repeater field 
@@ -173,6 +200,10 @@ class Wordpress_Twitter_1TP_Acf {
 		if(self::check_acf_repeater()){
 			if(function_exists("register_field_group"))
 			{
+				if(self::check_acf_hidden()){
+					$jsonFieldKey = self::get_acf_field_repeater_field_key('json');
+					self::$acf_field_repeater_structure['fields'][0]['sub_fields'][$jsonFieldKey]['type'] = "hidden";
+				}
 				register_field_group(self::$acf_field_repeater_structure);
 			}
 		}
