@@ -13,6 +13,8 @@ If the Advanced Custom Fields Hidden field (https://github.com/erickertz/acf-hid
 
 To retrieve the tweets, simply add the shortcode [get_tweets] to a post and visit that post in a browser. You can also set a cron task to call the post peridically in order to keep your posts up to date with the latest tweets.
 
+To delete tweets, simply add the shortcode [delete_tweets hashtag="#myhashtag"] to a post and visit that post in a browser. Only tweets attached to that page that contain the tweet specified in the shortcode will be deleted.
+
 notes: During its first run the plugin will go back as far as possible to retrieve already existing tweets. I'm not 100% sure how long Twitter keeps tweets avaiable through the API but it seems to be about a month or so. After the first run the plugin utilizes Twitter's since_id to cut down on API calls.
 
 ## Installation
@@ -31,6 +33,7 @@ You should now see the retrieved tweets available for that post in the Wordpress
 
 1. Add an option in setting page to define which post types the Twitter Hashtag field should be applied to. Right now it must be manually set in admin/class-wordpress-twitter-1tp-admin.php.
 2. Use Composer to manage and load Codebird dependency.
+3. Add delete_tweet_meta function to /public/class-wordpress-twitter-1tp.php to delete tweets that are saved as metadata.
 
 ## Updates
 
