@@ -330,12 +330,18 @@ class Wordpress_Twitter_1TP {
 	 *
 	 * @since    1.0.0
 	 */
-	private function parse_statuses($replies){
+	private function parse_statuses(Array $replies){
 		$statuses = array();
-		foreach($replies as $reply){
-			foreach($reply->statuses as $status){
-				$statuses[] = $status;
-			}
+		if(!empty($replies)){
+			foreach($replies as $reply){
+				if(isset($reply->statuses)){
+					if(!empty($reply->statuses)){
+						foreach($reply->statuses as $status){
+							$statuses[] = $status;
+						}		
+					}
+				}
+			}	
 		}
 		return $statuses;
 	}
