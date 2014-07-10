@@ -77,6 +77,7 @@ class Wordpress_Twitter_1TP {
 		 * Refer To http://codex.wordpress.org/Plugin_API#Hooks.2C_Actions_and_Filters
 		 */
 		add_shortcode( 'get_tweets', array($this, 'get_tweets') );
+		add_shortcode( 'delete_tweets', array($this, 'delete_tweets') );
 
 	}
 
@@ -352,15 +353,10 @@ class Wordpress_Twitter_1TP {
 	 * @since    1.0.0
 	 */
 	private function save_tweets($pageId, array $statuses){
-		$saveMethod = null;
-		if(class_exists('Wordpress_Twitter_1TP_Acf')){
-			if(Wordpress_Twitter_1TP_Acf::check_acf_repeater()){
-				$saveMethod = "acf";
-			}
-		}
+		$method = $this->get_method();
 		if(!empty($statuses)){
 			foreach($statuses as $status){
-				switch ($saveMethod) {
+				switch ($method) {
 				    case "acf":
 				        $this->save_tweet_acf( $pageId, $status);
 				        break;
@@ -480,6 +476,61 @@ class Wordpress_Twitter_1TP {
 		$bearer_token = $reply->access_token;
 		update_option('twitter_bearer_token',$bearer_token);
 		return $bearer_token;
+	}
+	
+	/**
+	 * Deletes specified tweets from a post
+	 *
+	 * @since    1.0.0
+	 */
+	public function delete_tweets($atts){
+		$method = $this->get_method();
+		switch ($method) {
+		    case "acf":
+		        $this->delete_tweet_acf( $atts );
+		        break;
+		    default:
+				// coming soon ;)
+		       //$this->delete_tweet_meta( $atts );
+		}
+		
+	}
+	
+	/**
+	 * Delete tweets saved as Advanced Custom Field Repeater field
+	 *
+	 * @since    1.0.0
+	 */
+	private function delete_tweet_acf( $atts ) {
+		$hashtag = $atts["hashtag"];
+		$acfRepeaterStructure = Wordpress_Twitter_1TP_Acf::$acf_field_repeater_structure;
+		$field_key = $acfRepeaterStructure['fields'][0]['key'];  
+		$post_id = get_the_ID();       
+		$value = get_field($field_key, $post_id);	
+		$new_value = array();
+		foreach ( $value as $id => $entry ) {
+			$json = json_decode($entry['json']);
+			if (strpos($json->text, $hashtag) === false){
+				$new_value[] = $entry;
+			}
+		}
+		$status = update_field( $field_key, $new_value, $post_id );
+	}
+	
+	/**
+	 * Detects if using Advanced Custom Field Repeater field to save tweets or native metadata
+	 * example shortcode: [delete_tweets hashtag="#myhashtag"]
+	 *
+	 * @since    1.0.0
+	 */
+	private function get_method(){
+		$method = null;
+		if(class_exists('Wordpress_Twitter_1TP_Acf')){
+			if(Wordpress_Twitter_1TP_Acf::check_acf_repeater()){
+				$method = "acf";
+			}
+		}
+		return $method;
 	}
 
 }
