@@ -287,7 +287,7 @@ class Wordpress_Twitter_1TP {
 			$postId = $hashtagPage['id'];
 			$hashtag = $hashtagPage['hashtag'];
 			$sinceId = $hashtagPage['since_id'];
-			$statuses = $this->retrieve_tweets($hashtag,$sinceId);
+			$statuses = array_reverse($this->retrieve_tweets($hashtag,$sinceId));
 			$this->save_tweets($postId,$statuses);
 		}
 		return "tweets saved";
@@ -362,7 +362,7 @@ class Wordpress_Twitter_1TP {
 				       $this->save_tweet_meta( $pageId, $status);
 				}
 			}
-			update_post_meta( $pageId, '_twitter_since_id',  $statuses[0]->id);
+			update_post_meta( $pageId, '_twitter_since_id',  $statuses[count($statuses)-1]->id);
 		}
 		return true;
 	}
@@ -373,7 +373,7 @@ class Wordpress_Twitter_1TP {
 	 * @since    1.0.0
 	 */
 	private function save_tweet_meta($pageId,$status){
-		$statusJson = json_encode($status);
+		$statusJson = json_encode($status,JSON_HEX_QUOT | JSON_HEX_APOS);
 		update_post_meta( $pageId, 'tweet: '.$status->text, $statusJson, "" );
 	}
 	
@@ -383,11 +383,14 @@ class Wordpress_Twitter_1TP {
 	 * @since    1.0.0
 	 */
 	private function save_tweet_acf($pageId,$status){
-		$statusJson = json_encode($status);
+		$statusJson = json_encode($status,JSON_HEX_QUOT | JSON_HEX_APOS);
 		$acfRepeaterStructure = Wordpress_Twitter_1TP_Acf::$acf_field_repeater_structure;
 		$newTweet = array();
 		foreach($acfRepeaterStructure['fields'][0]['sub_fields'] as $acfRepeaterStructureSubField){
 			switch ($acfRepeaterStructureSubField['name']) {
+			    case "user_name":
+			        $newTweet[$acfRepeaterStructureSubField['key']] = $status->user->name;
+			        break;
 			    case "tweet":
 			        $newTweet[$acfRepeaterStructureSubField['key']] = $status->text;
 			        break;
@@ -401,9 +404,10 @@ class Wordpress_Twitter_1TP {
 		}
 		$field_key = $acfRepeaterStructure['fields'][0]['key'];
 		$value = get_field($field_key, $pageId);
-		$value = get_field($field_key, $pageId);
-		$value[] = $newTweet;
-		update_field( $field_key, $value, $pageId );
+		$valueNew = array();
+		$valueNew[] = $newTweet;
+		$valueMerged = array_merge($valueNew,$value);
+		update_field( $field_key, $valueMerged, $pageId );
 	}
 
 	/**

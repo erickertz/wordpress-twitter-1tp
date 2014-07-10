@@ -1,25 +1,38 @@
-# ACF Hidden Field
+# Wordpress_Twitter_1TP
 
-A hidden field for Advanced Custom Fields
+Uses the Twitter REST API 1.1 search/tweets functionality to add tweets to posts
 
 -----------------------
 
-### Description
+## Description
 
-A hidden field for Advanced Custom Fields based off of acf-field-type-template: https://github.com/elliotcondon/acf-field-type-template. Provides litte value on its own but could be handy when used in conjunction with other plugins.
+This plugin uses the Twitter REST API 1.1 search/tweets functionality to add tweets to posts. After Installation a new Twitter Settings section will appear in the admin where you can input your Twitter API credentials. There will also be a new Twitter Hashtag field available for the posts that will use the plugin (specified in admin/class-wordpress-twitter-1tp-admin.php). The plugin will use the text specified in these fields to search twitter and attach the returned tweets to the corresponding posts.
 
-### Compatibility
+If the Advanced Custom Field Repeater field is installed, the tweets will go into a grouped repeater field. If not, they will be saved as regular post meta.
+If the Advanced Custom Fields Hidden field (https://github.com/erickertz/acf-hidden) is installed, the full json string will not be visible in the admin.
 
-This ACF field type is compatible with:
-* ACF 5
-* ACF 4
+To retrieve the tweets, simply add the shortcode [get_tweets] to a post and visit that post in a browser. You can also set a cron task to call the post peridically in order to keep your posts up to date with the latest tweets.
 
-### Installation
+notes: During its first run the plugin will go back as far as possible to retrieve already existing tweets. I'm not 100% sure how long Twitter keeps tweets avaiable through the API but it seems to be about a month or so. After the first run the plugin utilizes Twitter's since_id to cut down on API calls.
 
-1. Copy the `acf-hidden` folder into your `wp-content/plugins` folder
-2. Activate the hidden plugin via the plugins admin page
-3. Create a new field via ACF and select the hidden type
-4. Please refer to the description for more info regarding the field type settings
+## Installation
 
-### Changelog
-Please see `readme.txt` for changelog
+1. Download `wordpress-twitter-1tp`
+2. Extract the `wordpress-twitter-1tp` directory to your computer
+3. Upload the `wordpress-twitter-1tp` directory to the `/wp-content/plugins/` directory
+4. Activate the plugin in the Plugin dashboard
+5. Go to Settings->Twitter and enter your API credentials
+6. Go to a page or post and enter the search phrase you would like to associate with the post.
+7. Add the shortcode [get_tweets] to a post and visit that post in a browser
+
+You should now see the retrieved tweets available for that post in the Wordpress admin as Custom Fields. Make sure you have Custom fields checked off in your Screen Options.
+
+## To-Do's
+
+1. Add an option in setting page to define which post types the Twitter Hashtag field should be applied to. Right now it must be manually set in admin/class-wordpress-twitter-1tp-admin.php.
+2. Use Composer to manage and load Codebird dependency.
+
+## Updates
+
+The basic structure of this plugin was cloned from the [WordPress-Plugin-Boilerplate](https://github.com/tommcfarlin/WordPress-Plugin-Boilerplate) project.
+This plugin supports the [GitHub Updater](https://github.com/afragen/github-updater) plugin, so if you install that, this plugin becomes automatically updateable direct from GitHub. Any submission to WP.org repo will make this redundant.

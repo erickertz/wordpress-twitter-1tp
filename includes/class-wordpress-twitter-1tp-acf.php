@@ -45,6 +45,19 @@ class Wordpress_Twitter_1TP_Acf {
 				'type' => 'repeater',
 				'sub_fields' => array (
 					array (
+						'key' => 'field_53bd96d853419',
+						'label' => 'user name',
+						'name' => 'user_name',
+						'type' => 'text',
+						'column_width' => '',
+						'default_value' => '',
+						'placeholder' => '',
+						'prepend' => '',
+						'append' => '',
+						'formatting' => 'none',
+						'maxlength' => '',
+					),
+					array (
 						'key' => 'field_53bafa19cf1df',
 						'label' => 'tweet',
 						'name' => 'tweet',
