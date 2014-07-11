@@ -503,15 +503,19 @@ class Wordpress_Twitter_1TP {
 	 */
 	private function delete_tweet_acf( $atts ) {
 		$hashtag = $atts["hashtag"];
+		$post_id = get_the_ID(); 
+		if(isset($atts["post_id"])){
+			$post_id = $atts["post_id"];	
+		}
 		$acfRepeaterStructure = Wordpress_Twitter_1TP_Acf::$acf_field_repeater_structure;
-		$field_key = $acfRepeaterStructure['fields'][0]['key'];  
-		$post_id = get_the_ID();       
+		$field_key = $acfRepeaterStructure['fields'][0]['key'];        
 		$value = get_field($field_key, $post_id);	
 		$new_value = array();
 		foreach ( $value as $id => $entry ) {
 			$json = json_decode($entry['json']);
-			if (strpos($json->text, $hashtag) === false){
+			if (strpos(strtolower($json->text), strtolower($hashtag)) === false){
 				$new_value[] = $entry;
+			} else {
 			}
 		}
 		$status = update_field( $field_key, $new_value, $post_id );
