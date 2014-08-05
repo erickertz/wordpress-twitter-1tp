@@ -413,7 +413,20 @@ class Wordpress_Twitter_1TP {
 		$valueNew = array();
 		$valueNew[] = $newTweet;
 		$valueMerged = array_merge($valueNew,$value);
+		$valueMerged = $this->htmlspecialchars_decode_array($valueMerged);
 		update_field( $field_key, $valueMerged, $pageId );
+	}
+
+	/**
+	 * Since ACF doesn't have $double_encode as false when using htmlspecialchars, we need this function
+	 *
+	 * @since    1.0.0
+	 */
+	public function htmlspecialchars_decode_array($array){
+		$arrayJsonEncoded = json_encode($array,JSON_HEX_QUOT | JSON_HEX_APOS);
+		$arrayJsonEncodedSpecCharsDecoded =  htmlspecialchars_decode($arrayJsonEncoded);
+		$arrayJsonDecoded = json_decode($arrayJsonEncodedSpecCharsDecoded,true);
+		return $arrayJsonDecoded;
 	}
 
 	/**
@@ -520,7 +533,7 @@ class Wordpress_Twitter_1TP {
 		$value = get_field($field_key, $post_id);	
 		$new_value = array();
 		foreach ( $value as $id => $entry ) {
-			switch($entry){
+			switch($search){
 				case "all":
 					if (strpos(strtolower($entry), strtolower($hashtag)) === false){
 						$new_value[] = $entry;
