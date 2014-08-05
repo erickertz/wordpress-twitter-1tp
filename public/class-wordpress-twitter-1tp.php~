@@ -405,11 +405,7 @@ class Wordpress_Twitter_1TP {
 			}
 		}
 		$field_key = $acfRepeaterStructure['fields'][0]['key'];
-		$row_limit = $acfRepeaterStructure['fields'][0]['row_limit'];
-		$value = get_field($field_key, $pageId, true);
-		if(is_numeric($row_limit)){
-			$value = array_slice($value,0,$row_limit-1,true);
-		}
+		$value = get_field($field_key, $pageId);
 		$valueNew = array();
 		$valueNew[] = $newTweet;
 		$valueMerged = array_merge($valueNew,$value);
